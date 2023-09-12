@@ -1,0 +1,16 @@
+.flight-search-results{
+    display: flex;
+}
+
+.flight-filters{
+    display: flex;
+    flex-direction: column;
+    margin: 0 2rem;
+    width: 15rem
+}
+
+.flight-list{
+    display: flex;
+    flex-direction: column;
+    width: 650px;
+}

@@ -1,0 +1,7 @@
+.showMoreButton{
+    width: 33%;
+    max-width: 300px;
+    margin: 1rem auto;
+    height: 2rem;
+    cursor: pointer;
+}
