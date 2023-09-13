@@ -5,3 +5,9 @@
     height: 2rem;
     cursor: pointer;
 }
+
+.nothing-found-text{
+    text-align: center;
+    margin: 5rem;
+    font-size: 2rem;
+}

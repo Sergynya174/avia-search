@@ -7,11 +7,22 @@ function FlightSearchResults() {
   const [filterData, setFilterData] = useState({
     sortBy: "priceAscending",
     stops: [],
-    priceRange: { min: 0, max: 1000000 },
+    priceTo: "",
+    priceFrom: "",
     airlines: [],
   });
 
+  const [sortDirection, setSortDirection] = useState("asc");
+
   const handleFilterChange = (newFilterData) => {
+    if (newFilterData.sortBy !== filterData.sortBy) {
+      setSortDirection("asc");
+    } else {
+      setSortDirection((prevDirection) =>
+        prevDirection === "asc" ? "desc" : "asc"
+      );
+    }
+
     setFilterData(newFilterData);
   };
 
@@ -21,6 +32,7 @@ function FlightSearchResults() {
         <FlightFilter
           filterData={filterData}
           onFilterChange={handleFilterChange}
+          sortDirection={sortDirection}
         />
       </div>
       <div className="flight-list">

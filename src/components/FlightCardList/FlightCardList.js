@@ -6,6 +6,7 @@ import flights from "../../flights.json";
 export const FlightCardList = ({ filterData }) => {
   const [displayedFlights, setDisplayedFlights] = useState(5);
   const [filteredFlights, setFilteredFlights] = useState([]);
+  const [sortDirection, setSortDirection] = useState("asc");
 
   useEffect(() => {
     let filteredFlights = flights.result.flights;
@@ -16,7 +17,18 @@ export const FlightCardList = ({ filterData }) => {
       );
     }
 
-    if (filterData.sortBy === "priceAscending") {
+    if (filterData.stops.length > 0) {
+      filteredFlights = filteredFlights.filter((flight) => {
+        const segments = flight.flight.legs[0].segments.length - 1;
+        return filterData.stops.includes(segments.toString());
+      });
+    }
+
+    if (filterData.sortBy === "time") {
+      filteredFlights.sort(
+        (a, b) => a.flight.legs[0].duration - b.flight.legs[0].duration
+      );
+    } else if (filterData.sortBy === "priceAscending") {
       filteredFlights.sort(
         (a, b) => a.flight.price.total.amount - b.flight.price.total.amount
       );
@@ -26,18 +38,35 @@ export const FlightCardList = ({ filterData }) => {
       );
     }
 
-    // Сортировка по времени в пути
-    if (filterData.sortBy === "time") {
-      filteredFlights.sort(
-        (a, b) => a.flight.legs[0].duration - b.flight.legs[0].duration
-      );
+    if (
+      (filterData.priceFrom !== "" && filterData.priceTo !== "") ||
+      (filterData.priceFrom === "" && filterData.priceTo !== "") ||
+      (filterData.priceFrom !== "" && filterData.priceTo === "")
+    ) {
+      filteredFlights = filteredFlights.filter((flight) => {
+        const flightPrice = flight.flight.price.total.amount;
+        const priceFrom = parseFloat(filterData.priceFrom);
+        const priceTo = parseFloat(filterData.priceTo);
+
+        if (isNaN(priceFrom) && isNaN(priceTo)) {
+          return true;
+        }
+
+        if (!isNaN(priceFrom) && isNaN(priceTo)) {
+          return flightPrice >= priceFrom;
+        }
+
+        if (isNaN(priceFrom) && !isNaN(priceTo)) {
+          return flightPrice <= priceTo;
+        }
+
+        console.log(flightPrice, priceFrom);
+        return flightPrice >= priceFrom && flightPrice <= priceTo;
+      });
     }
 
-    if (filterData.stops.length > 0) {
-      filteredFlights = filteredFlights.filter((flight) =>
-        filterData.stops.includes(flight.flight.legs[0].segments.length - 1)
-      );
-    }
+    setSortDirection(filterData.sortBy === "priceAscending" ? "asc" : "desc");
+
     setFilteredFlights(filteredFlights);
   }, [filterData]);
 
@@ -46,13 +75,21 @@ export const FlightCardList = ({ filterData }) => {
   };
   return (
     <>
-      {filteredFlights.slice(0, displayedFlights).map((flight, index) => (
-        <FlightCard flight={flight.flight} key={index} />
-      ))}
-      {displayedFlights < filteredFlights.length && (
-        <button className="showMoreButton" onClick={handleShowMoreClick}>
-          Показать еще
-        </button>
+      {filteredFlights.length === 0 ? (
+        <div className="nothing-found">
+          <p className="nothing-found-text">Ничего не найдено</p>
+        </div>
+      ) : (
+        <>
+          {filteredFlights.slice(0, displayedFlights).map((flight, index) => (
+            <FlightCard flight={flight.flight} key={index} />
+          ))}
+          {displayedFlights < filteredFlights.length && (
+            <button className="showMoreButton" onClick={handleShowMoreClick}>
+              Показать еще
+            </button>
+          )}
+        </>
       )}
     </>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 import "./FlightFilter.css";
 
-function FlightFilter({ filterData, onFilterChange }) {
+function FlightFilter({ filterData, onFilterChange, sortDirection }) {
   const handleFormChange = (event) => {
     const { name, value, type, checked } = event.target;
 
@@ -23,6 +23,20 @@ function FlightFilter({ filterData, onFilterChange }) {
       onFilterChange(updatedFilterData);
     } else if (type === "text") {
       onFilterChange({ ...filterData, [name]: value });
+    } else if (type === "radio" && name === "sortBy") {
+      const updatedFilterData = { ...filterData };
+      if (updatedFilterData.sortBy === value) {
+        updatedFilterData.sortBy =
+          value === "priceAscending" ? "priceDescending" : "priceAscending";
+      } else {
+        updatedFilterData.sortBy = value;
+      }
+      onFilterChange(updatedFilterData);
+    } else if (
+      type === "text" &&
+      (name === "priceFrom" || name === "priceTo")
+    ) {
+      onFilterChange({ ...filterData, [name]: value });
     }
   };
 
@@ -35,7 +49,7 @@ function FlightFilter({ filterData, onFilterChange }) {
             <input
               className="radio-input"
               type="radio"
-              defaultChecked={true}
+              defaultChecked={sortDirection === "asc"}
               name="sortBy"
               value="priceAscending"
             />
@@ -45,6 +59,7 @@ function FlightFilter({ filterData, onFilterChange }) {
             <input
               className="radio-input"
               type="radio"
+              defaultChecked={sortDirection === "desc"}
               name="sortBy"
               value="priceDescending"
             />
@@ -54,6 +69,7 @@ function FlightFilter({ filterData, onFilterChange }) {
             <input
               className="radio-input"
               type="radio"
+              defaultChecked={sortDirection === "time"}
               name="sortBy"
               value="time"
             />
@@ -69,6 +85,7 @@ function FlightFilter({ filterData, onFilterChange }) {
               defaultChecked={false}
               name="stops"
               value="0"
+              checked={filterData.stops.includes("0")}
             />
             <p className="text">- Без пересадок</p>
           </label>
@@ -79,6 +96,7 @@ function FlightFilter({ filterData, onFilterChange }) {
               defaultChecked={false}
               name="stops"
               value="1"
+              checked={filterData.stops.includes("1")}
             />
             <p className="text">- 1 пересадка</p>
           </label>
@@ -87,11 +105,21 @@ function FlightFilter({ filterData, onFilterChange }) {
           <p className="title-input">Цена</p>
           <label className="container-input">
             <p className="text">От</p>
-            <input className="input" type="text" name="priceRange.min" />
+            <input
+              className="input"
+              type="text"
+              name="priceFrom"
+              value={filterData.priceFrom}
+            />
           </label>
           <label className="container-input">
             <p className="text">До</p>
-            <input className="input" type="text" name="priceRange.max" />
+            <input
+              className="input"
+              type="text"
+              name="priceTo"
+              value={filterData.priceTo}
+            />
           </label>
         </div>
         <div className="input-group">
