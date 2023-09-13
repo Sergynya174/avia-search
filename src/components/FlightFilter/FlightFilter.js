@@ -110,6 +110,7 @@ function FlightFilter({ filterData, onFilterChange, sortDirection }) {
               type="text"
               name="priceFrom"
               value={filterData.priceFrom}
+              placeholder="0"
             />
           </label>
           <label className="container-input">
@@ -119,6 +120,7 @@ function FlightFilter({ filterData, onFilterChange, sortDirection }) {
               type="text"
               name="priceTo"
               value={filterData.priceTo}
+              placeholder="1000000"
             />
           </label>
         </div>
