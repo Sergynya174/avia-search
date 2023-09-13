@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/Sergynya174/avia-search/static/css/main.d2bb5bd8.css",
-    "main.js": "/Sergynya174/avia-search/static/js/main.c5b36acf.js",
-    "index.html": "/Sergynya174/avia-search/index.html",
-    "main.d2bb5bd8.css.map": "/Sergynya174/avia-search/static/css/main.d2bb5bd8.css.map",
-    "main.c5b36acf.js.map": "/Sergynya174/avia-search/static/js/main.c5b36acf.js.map"
+    "main.css": "/avia-search/static/css/main.d2bb5bd8.css",
+    "main.js": "/avia-search/static/js/main.c5b36acf.js",
+    "index.html": "/avia-search/index.html",
+    "main.d2bb5bd8.css.map": "/avia-search/static/css/main.d2bb5bd8.css.map",
+    "main.c5b36acf.js.map": "/avia-search/static/js/main.c5b36acf.js.map"
   },
   "entrypoints": [
     "static/css/main.d2bb5bd8.css",
