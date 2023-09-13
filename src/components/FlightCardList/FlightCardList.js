@@ -38,33 +38,6 @@ export const FlightCardList = ({ filterData }) => {
       );
     }
 
-    if (
-      (filterData.priceFrom !== "" && filterData.priceTo !== "") ||
-      (filterData.priceFrom === "" && filterData.priceTo !== "") ||
-      (filterData.priceFrom !== "" && filterData.priceTo === "")
-    ) {
-      filteredFlights = filteredFlights.filter((flight) => {
-        const flightPrice = flight.flight.price.total.amount;
-        const priceFrom = parseFloat(filterData.priceFrom);
-        const priceTo = parseFloat(filterData.priceTo);
-
-        if (isNaN(priceFrom) && isNaN(priceTo)) {
-          return true;
-        }
-
-        if (!isNaN(priceFrom) && isNaN(priceTo)) {
-          return flightPrice >= priceFrom;
-        }
-
-        if (isNaN(priceFrom) && !isNaN(priceTo)) {
-          return flightPrice <= priceTo;
-        }
-
-        console.log(flightPrice, priceFrom);
-        return flightPrice >= priceFrom && flightPrice <= priceTo;
-      });
-    }
-
     setSortDirection(filterData.sortBy === "priceAscending" ? "asc" : "desc");
 
     setFilteredFlights(filteredFlights);

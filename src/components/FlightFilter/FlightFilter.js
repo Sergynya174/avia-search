@@ -1,7 +1,12 @@
 import React from "react";
 import "./FlightFilter.css";
 
-function FlightFilter({ filterData, onFilterChange, sortDirection }) {
+function FlightFilter({
+  filterData,
+  onFilterChange,
+  sortDirection,
+  setSortDirection,
+}) {
   const handleFormChange = (event) => {
     const { name, value, type, checked } = event.target;
 
@@ -25,12 +30,18 @@ function FlightFilter({ filterData, onFilterChange, sortDirection }) {
       onFilterChange({ ...filterData, [name]: value });
     } else if (type === "radio" && name === "sortBy") {
       const updatedFilterData = { ...filterData };
-      if (updatedFilterData.sortBy === value) {
-        updatedFilterData.sortBy =
-          value === "priceAscending" ? "priceDescending" : "priceAscending";
+
+      if (value === "priceAscending") {
+        updatedFilterData.sortBy = value;
+        updatedFilterData.sortDirection = "asc";
+      } else if (value === "priceDescending") {
+        updatedFilterData.sortBy = value;
+        updatedFilterData.sortDirection = "desc";
       } else {
         updatedFilterData.sortBy = value;
+        updatedFilterData.sortDirection = "time";
       }
+
       onFilterChange(updatedFilterData);
     } else if (
       type === "text" &&

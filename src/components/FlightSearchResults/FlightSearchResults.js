@@ -33,10 +33,11 @@ function FlightSearchResults() {
           filterData={filterData}
           onFilterChange={handleFilterChange}
           sortDirection={sortDirection}
+          setSortDirection={setSortDirection}
         />
       </div>
       <div className="flight-list">
-        <FlightCardList filterData={filterData} />
+        <FlightCardList filterData={filterData} sortDirection={sortDirection} />
       </div>
     </div>
   );
